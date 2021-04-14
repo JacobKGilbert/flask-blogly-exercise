@@ -32,7 +32,7 @@ def new_user_rt():
   if request.method == 'POST':
     first_name = request.form['firstName']
     last_name = request.form['lastName']
-    img_url = request.form['imgUrl'] if imgUrl else None
+    img_url = request.form['imgUrl'] if request.form['imgUrl'] else None
     new_user = User(first_name=first_name, last_name=last_name, img_url=img_url)
 
     db.session.add(new_user)
@@ -54,12 +54,12 @@ def user_edit_rt(user_id):
     ed_user = User.query.get(user_id)
     ed_user.first_name = request.form['firstName']
     ed_user.last_name = request.form['lastName']
-    ed_user.img_url = request.form['imgUrl'] if imgUrl else None
+    ed_user.img_url = request.form['imgUrl'] if request.form['imgUrl'] else None
 
     db.session.add(ed_user)
-    db.session.commit
+    db.session.commit()
 
-    return redirects('/users')
+    return redirect('/users')
   else:
     user = User.query.get(user_id)
     return render_template('edit.html', user=user)
@@ -67,4 +67,7 @@ def user_edit_rt(user_id):
 @app.route('/users/<int:user_id>/delete', methods=['POST'])
 def delete_user_rt(user_id):
   '''Delete select user.'''
+  User.query.filter(User.id == user_id).delete()
+  
+  db.session.commit()
   return redirect('/')

@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
-{% block Title %}{{}}{% endblock %}
+{% block Title %}{{user.first_name}} {{user.last_name}} Page{% endblock %}
 
 {% block Body %}
-<img src="{{user.imgUrl}}" alt="User profile image">
+<img src="{{user.img_url}}" alt="User profile image">
 <h2>{{user.first_name}} {{user.last_name}}</h2>
-<a href="/users/{{user.id}}/edit">Edit</a>
-<a href="/users/{{user.id}}/delete">Delete</a>
+<a href="/users/{{user.id}}/edit" class="btn btn-info">Edit</a>
+<form action="/users/{{user.id}}/delete" method="post">
+  <button type="submit" class="btn btn-danger">Delete</button>
+</form>
 {% endblock %}

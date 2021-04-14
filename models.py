@@ -21,6 +21,4 @@ class User(db.Model):
 
   last_name = db.Column(db.String(20), nullable = False)
 
-  img_url = db.Column(db.String(100), default = 'https://avatars.githubusercontent.com/u/76506172?s=60&v=4')
-
-  def edit_user(self, first_name, last_name, img_url):
+  img_url = db.Column(db.String(400), default = 'https://avatars.githubusercontent.com/u/76506172?s=60&v=4')
