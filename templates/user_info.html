@@ -2,5 +2,8 @@
 {% block Title %}{{}}{% endblock %}
 
 {% block Body %}
-
+<img src="{{user.imgUrl}}" alt="User profile image">
+<h2>{{user.first_name}} {{user.last_name}}</h2>
+<a href="/users/{{user.id}}/edit">Edit</a>
+<a href="/users/{{user.id}}/delete">Delete</a>
 {% endblock %}

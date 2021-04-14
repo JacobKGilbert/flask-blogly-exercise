@@ -17,12 +17,14 @@ db.create_all()
 
 @app.route('/')
 def home_rt():
+  '''Get home page.'''
   return redirect('/users')
 
 @app.route('/users')
 def users_list_rt():
   '''Renders all users into list.'''
-  return render_template('users.html')
+  users = User.query.all()
+  return render_template('users.html', users=users)
 
 @app.route('/users/new', methods=['GET', 'POST'])
 def new_user_rt():
@@ -30,7 +32,7 @@ def new_user_rt():
   if request.method == 'POST':
     first_name = request.form['firstName']
     last_name = request.form['lastName']
-    img_url = request.form['imgUrl']
+    img_url = request.form['imgUrl'] if imgUrl else None
     new_user = User(first_name=first_name, last_name=last_name, img_url=img_url)
 
     db.session.add(new_user)
@@ -39,6 +41,30 @@ def new_user_rt():
   else:
     return render_template('form.html')
 
-@app.route('/users/{user_id}')
+@app.route('/users/<int:user_id>')
 def select_user_rt(user_id):
-  return render_template('user_info.html')
+  '''Show details for single user.'''
+  user = User.query.get_or_404(user_id)
+  return render_template('user_info.html', user=user)
+
+@app.route('/users/<int:user_id>/edit', methods=['GET', 'POST'])
+def user_edit_rt(user_id):
+  '''GET edit form. POST edits into database.'''
+  if request.method == 'POST':
+    ed_user = User.query.get(user_id)
+    ed_user.first_name = request.form['firstName']
+    ed_user.last_name = request.form['lastName']
+    ed_user.img_url = request.form['imgUrl'] if imgUrl else None
+
+    db.session.add(ed_user)
+    db.session.commit
+
+    return redirects('/users')
+  else:
+    user = User.query.get(user_id)
+    return render_template('edit.html', user=user)
+
+@app.route('/users/<int:user_id>/delete', methods=['POST'])
+def delete_user_rt(user_id):
+  '''Delete select user.'''
+  return redirect('/')
