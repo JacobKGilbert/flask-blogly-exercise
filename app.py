@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, redirect, request
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -20,6 +20,7 @@ def home_rt():
   '''Get home page.'''
   return redirect('/users')
 
+# User Routes
 @app.route('/users')
 def users_list_rt():
   '''Renders all users into list.'''
@@ -39,13 +40,14 @@ def new_user_rt():
     db.session.commit()
     return redirect('/users')
   else:
-    return render_template('form.html')
+    return render_template('new_user_form.html')
 
 @app.route('/users/<int:user_id>')
 def select_user_rt(user_id):
   '''Show details for single user.'''
   user = User.query.get_or_404(user_id)
-  return render_template('user_info.html', user=user)
+  posts = Post.query.filter_by(f'Post.author.id = {user_id}').all()
+  return render_template('user_info.html', user=user, posts=posts)
 
 @app.route('/users/<int:user_id>/edit', methods=['GET', 'POST'])
 def user_edit_rt(user_id):
@@ -71,3 +73,20 @@ def delete_user_rt(user_id):
   
   db.session.commit()
   return redirect('/')
+
+# Blog Post Routes
+@app.route('/users/<int:user_id>/posts/new', methods=['GET', 'POST'])
+def new_post_rt(user_id):
+  '''GET new post form. POST new blog post.'''
+  if request.method == 'POST':
+    author = User.query.get(user_id)
+    
+    return redirect(f'/users/{user_id}')
+  else:
+    return render_template('new_post_form.html')
+
+@app.route('/posts/<int:post_id>')
+def select_post_rt(post_id):
+  post = Post.query.get_or_404(post_id)
+  return render_template('post.html', post=post)
+

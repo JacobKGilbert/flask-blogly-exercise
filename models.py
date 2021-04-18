@@ -33,11 +33,11 @@ class Post(db.Model):
 
   content = db.Column(db.Text, nullable = False)
 
-  created_at = db.Column(db.DateTime(timezone=True), default = func.now)
+  created_at = db.Column(db.DateTime(timezone=True), default = db.func.now())
 
-  user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+  user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-  author = db.relationship('User', backrefs='posts')
+  author = db.relationship('User', backref='posts')
   
   def __repr__(self):
     p = self

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block Title %}New Post Form{% endblock %}
+
+{% block Body %}
+<h1>New Post</h1>
+<form action="/users/new" method="POST">
+  <label for="title">* Title:</label>
+  <input type="text" name="title" id="title" required>
+  <label for="content">* Content:</label>
+  <textarea name="content" id="content" cols="30" rows="10" maxlength="1000" required></textarea>
+  
+  <button type="submit" class="btn btn-success">Submit</button>
+</form>
+<a href="/" class="btn btn-secondary">Go Back</a>
+<sub>* = Required</sub>
+{% endblock %}
