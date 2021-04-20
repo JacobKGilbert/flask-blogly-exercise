@@ -5,4 +5,8 @@
 <h1>{{post.title}}</h1>
 <p>{{post.content}}</p>
 <p>By {{post.author.first_name}} {{post.author.last_name}}</p>
+<a href="/posts/{{post.id}}/edit" class="btn btn-info">Edit</a>
+<form action="/posts/{{post.id}}/delete" method="POST">
+  <button type="submit" class="btn btn-danger">Delete</button>
+</form>
 {% endblock %}
