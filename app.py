@@ -109,7 +109,7 @@ def edit_post_rt(post_id):
 
     return redirect(f'/posts/{post_id}')
   else:
-    post = User.query.get(post_id)
+    post = Post.query.get(post_id)
     return render_template('edit_post.html', post=post)
 
 @app.route('/posts/<int:post_id>/delete', methods=['POST'])
@@ -118,7 +118,7 @@ def delete_post_rt(post_id):
   post = Post.query.get(post_id)
   user_id = post.author.id
 
-  post.delete()
+  Post.query.filter(Post.id == post_id).delete()
 
   db.session.commit()
   return redirect(f'/users/{user_id}')
