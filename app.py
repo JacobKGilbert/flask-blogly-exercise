@@ -79,7 +79,6 @@ def delete_user_rt(user_id):
 def new_post_rt(user_id):
   '''GET new post form. POST new blog post.'''
   if request.method == 'POST':
-    user_id = User.query.get(user_id)
     title = request.form['title']
     content = request.form['content']
     new_post = Post(title=title, content=content, user_id=user_id)
