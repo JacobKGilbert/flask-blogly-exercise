@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from app import app
-from models import db, User
+from models import db, User, Post
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test'
 app.config['SQLALCHEMY_ECHO'] = False
@@ -15,7 +15,7 @@ db.drop_all()
 db.create_all()
 
 class UserRouteTestCase(TestCase):
-  '''Tests for flask routes'''
+  '''Tests for User flask routes.'''
 
   def setUp(self):
     User.query.delete()
@@ -61,3 +61,4 @@ class UserRouteTestCase(TestCase):
 
       self.assertEqual(res.status_code, 200)
       self.assertIn('Save', html)
+
