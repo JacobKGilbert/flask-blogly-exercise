@@ -55,8 +55,6 @@ class Tag(db.Model):
   
   tag_name = db.Column(db.Text, nullable=False, unique=True)
 
-  post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-
   def __repr__(self):
     t = self
     return f'<Tag id={t.id} tag_name={t.tag_name}>'
